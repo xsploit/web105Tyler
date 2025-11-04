@@ -4,119 +4,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BC Highway Cams - Kaslo to Greenwood Route</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 20px 0;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
+        .main-header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
         }
 
-        header {
-            text-align: center;
+        .main-header h1 {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .route-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            margin-bottom: 40px;
-            padding: 30px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            font-size: 1.1rem;
         }
 
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .route-info {
-            font-size: 1.2em;
-            opacity: 0.95;
-            margin-top: 10px;
+        .controls-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
         }
 
         .location-section {
             margin-bottom: 40px;
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease;
-        }
-
-        .location-section:hover {
-            transform: translateY(-5px);
         }
 
         .location-header {
-            display: flex;
-            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
             margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 3px solid #667eea;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
         }
 
-        .location-number {
+        .location-badge {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5em;
+            font-size: 1.5rem;
             font-weight: bold;
             margin-right: 15px;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
 
-        .location-name {
-            font-size: 1.8em;
+        .location-title {
             color: #333;
+            font-size: 1.8rem;
             font-weight: bold;
-        }
-
-        .cameras-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 20px;
+            display: inline-block;
+            vertical-align: middle;
         }
 
         .camera-card {
-            background: #f8f9fa;
-            border-radius: 12px;
+            height: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
         }
 
         .camera-card:hover {
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-            transform: scale(1.02);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
         }
 
-        .camera-title {
+        .card-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 15px;
-            font-size: 1.1em;
             font-weight: 600;
-            text-align: center;
+            padding: 15px;
+            border: none;
         }
 
-        .camera-image-container {
+        .camera-img-container {
             position: relative;
             background: #000;
             min-height: 300px;
@@ -125,265 +114,291 @@
             justify-content: center;
         }
 
-        .camera-image {
+        .camera-img {
             width: 100%;
             height: auto;
             display: block;
             cursor: pointer;
         }
 
-        .loading {
-            color: white;
-            font-size: 1em;
+        .loading-spinner {
             position: absolute;
-        }
-
-        .last-updated {
-            padding: 10px 15px;
-            background: #e9ecef;
-            font-size: 0.85em;
-            color: #666;
-            text-align: center;
-        }
-
-        .refresh-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            font-size: 1.2rem;
+        }
+
+        .card-body {
+            background: #f8f9fa;
+        }
+
+        .description-text {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .timestamp {
+            font-size: 0.85rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        .btn-screenshot {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             border: none;
-            padding: 12px 30px;
-            font-size: 1em;
-            border-radius: 25px;
-            cursor: pointer;
-            margin: 10px auto;
-            display: block;
+            color: white;
             font-weight: 600;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
             transition: all 0.3s ease;
         }
 
-        .refresh-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-        }
-
-        .refresh-btn:active {
-            transform: translateY(0);
-        }
-
-        .auto-refresh-control {
-            text-align: center;
+        .btn-screenshot:hover {
+            background: linear-gradient(135deg, #218838 0%, #1ba87e 100%);
+            transform: scale(1.05);
             color: white;
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 10px;
         }
 
-        .auto-refresh-control label {
-            font-size: 1.1em;
-            margin-right: 10px;
-        }
-
-        .auto-refresh-control select {
-            padding: 8px 15px;
-            font-size: 1em;
-            border-radius: 5px;
+        .btn-refresh-single {
+            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
             border: none;
-            cursor: pointer;
+            color: white;
+            font-weight: 600;
+        }
+
+        .btn-refresh-single:hover {
+            background: linear-gradient(135deg, #e0a800 0%, #e68900 100%);
+            color: white;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #5568d3 0%, #65398b 100%);
+        }
+
+        .screenshot-downloading {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
         }
 
         @media (max-width: 768px) {
-            h1 {
-                font-size: 1.8em;
+            .main-header h1 {
+                font-size: 1.8rem;
             }
 
-            .cameras-grid {
-                grid-template-columns: 1fr;
+            .location-title {
+                font-size: 1.4rem;
             }
-
-            .location-name {
-                font-size: 1.4em;
-            }
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            max-width: 95%;
-            max-height: 95%;
-        }
-
-        .modal-content img {
-            width: 100%;
-            height: auto;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 20px;
-            right: 40px;
-            color: white;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>🚗 BC Highway Cameras</h1>
-            <div class="route-info">Kaslo → Balfour → Nelson → Castlegar → Salmo → Trail → Rossland → Christina Lake → Greenwood</div>
-        </header>
-
-        <div class="auto-refresh-control">
-            <label for="refresh-interval">Auto-refresh:</label>
-            <select id="refresh-interval">
-                <option value="0">Off</option>
-                <option value="30">30 seconds</option>
-                <option value="60" selected>1 minute</option>
-                <option value="120">2 minutes</option>
-                <option value="300">5 minutes</option>
-            </select>
-            <button class="refresh-btn" onclick="refreshAllCameras()">🔄 Refresh All Cameras</button>
+        <!-- Header -->
+        <div class="main-header text-center">
+            <h1><i class="bi bi-camera-video"></i> BC Highway Cameras</h1>
+            <div class="route-badge">
+                <i class="bi bi-signpost-2"></i> Kaslo → Balfour → Nelson → Castlegar → Salmo → Trail → Rossland → Christina Lake → Greenwood
+            </div>
         </div>
 
+        <!-- Controls -->
+        <div class="controls-section">
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <label for="refresh-interval" class="form-label fw-bold">
+                        <i class="bi bi-arrow-clockwise"></i> Auto-refresh:
+                    </label>
+                    <select id="refresh-interval" class="form-select">
+                        <option value="0">Off</option>
+                        <option value="30">30 seconds</option>
+                        <option value="60" selected>1 minute</option>
+                        <option value="120">2 minutes</option>
+                        <option value="300">5 minutes</option>
+                    </select>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <button class="btn btn-primary btn-lg" onclick="refreshAllCameras()">
+                        <i class="bi bi-arrow-clockwise"></i> Refresh All Cameras
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cameras Container -->
         <div id="cameras-container"></div>
     </div>
 
-    <div id="image-modal" class="modal" onclick="closeModal()">
-        <span class="close-modal">&times;</span>
-        <div class="modal-content">
-            <img id="modal-image" src="" alt="Full size camera view">
+    <!-- Toast for screenshot notification -->
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999">
+        <div id="screenshot-toast" class="toast hide" role="alert">
+            <div class="toast-header bg-success text-white">
+                <i class="bi bi-check-circle me-2"></i>
+                <strong class="me-auto">Screenshot</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">
+                Screenshot downloaded successfully!
+            </div>
         </div>
     </div>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- html2canvas for screenshots -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <script>
+        const CORS_PROXY = 'https://corsproxy.io/?';
+
         const cameras = [
             {
                 location: "Kaslo",
                 number: 1,
+                description: "Gateway to the North Kootenay region, situated on the shores of Kootenay Lake. Monitor highway conditions at the junction of Highway 31 and Highway 31A.",
                 cams: [
-                    { name: "Kaslo - North View", id: 760 },
-                    { name: "Kaslo - West View", id: 761 },
-                    { name: "Kaslo - South View", id: 762 }
+                    { name: "Kaslo - North View", id: 760, desc: "Highway 31 looking north towards New Denver and Kaslo townsite" },
+                    { name: "Kaslo - West View", id: 761, desc: "Highway 31A junction looking west towards New Denver" },
+                    { name: "Kaslo - South View", id: 762, desc: "Highway 31 looking south towards Balfour and Nelson" }
                 ]
             },
             {
                 location: "Balfour",
                 number: 2,
+                description: "Critical ferry terminal connecting the West Arm of Kootenay Lake. The Balfour-Kootenay Bay ferry is the longest free ferry in North America.",
                 cams: [
-                    { name: "Balfour Ferry Terminal", id: 303 },
-                    { name: "Balfour Ferry Ramp", id: 1030 }
+                    { name: "Balfour Ferry Terminal", id: 303, desc: "Ferry terminal overview with Highway 3A approach" },
+                    { name: "Balfour Ferry Ramp", id: 1030, desc: "Ferry loading ramp and dock area showing current ferry position" }
                 ]
             },
             {
                 location: "Nelson",
                 number: 3,
+                description: "Queen City of the Kootenays - a vibrant community on the west arm of Kootenay Lake. Major highway junction connecting Highway 3A and Highway 6.",
                 cams: [
-                    { name: "Nelson - North View", id: 879 },
-                    { name: "Nelson - South View", id: 305 }
+                    { name: "Nelson - North View", id: 879, desc: "Highway approach from north looking towards downtown Nelson" },
+                    { name: "Nelson - South View", id: 305, desc: "Highway 3A south of Nelson heading towards Castlegar" }
                 ]
             },
             {
                 location: "Castlegar",
                 number: 4,
+                description: "Regional transportation hub at the confluence of the Kootenay and Columbia Rivers. Important intersection of Highway 3 and Highway 22.",
                 cams: [
-                    { name: "Castlegar - Highway 3 at 14th Ave", id: 162 }
+                    { name: "Castlegar", id: 162, desc: "Highway 3 at 14th Avenue in downtown Castlegar looking east" }
                 ]
             },
             {
                 location: "Salmo",
                 number: 5,
+                description: "Mountain community at the base of Salmo-Creston Summit (Kootenay Pass). Monitor conditions before heading over one of BC's highest highway passes.",
                 cams: [
-                    { name: "Salmo", id: 158 }
+                    { name: "Salmo", id: 158, desc: "Highway 3 in Salmo before the climb to Kootenay Pass" }
                 ]
             },
             {
                 location: "Trail",
                 number: 6,
+                description: "Historic smelter city on the Columbia River. Industrial heart of the West Kootenay region with connections to the US border.",
                 cams: [
-                    { name: "Trail", id: 307 }
+                    { name: "Trail", id: 307, desc: "Highway corridor through Trail showing current traffic conditions" }
                 ]
             },
             {
                 location: "Rossland",
                 number: 7,
+                description: "Mountain resort town known for Red Mountain ski resort. Situated at high elevation with challenging winter driving conditions.",
                 cams: [
-                    { name: "Rossland - West View", id: 160 },
-                    { name: "Rossland - East View", id: 1025 },
-                    { name: "Rossland - South View", id: 1026 }
+                    { name: "Rossland - West View", id: 160, desc: "Highway 3B west approach to Rossland looking towards Trail" },
+                    { name: "Rossland - East View", id: 1025, desc: "East side of Rossland towards Nancy Greene Summit" },
+                    { name: "Rossland - South View", id: 1026, desc: "Southern approach showing mountain terrain conditions" }
                 ]
             },
             {
                 location: "Christina Lake",
                 number: 8,
+                description: "Popular recreation area known for Canada's warmest lake. Highway 3 corridor through the scenic Boundary region.",
                 cams: [
-                    { name: "Christina Lake - Highway 3", id: 157 }
+                    { name: "Christina Lake", id: 157, desc: "Highway 3 at East Lake Drive on the east side of Christina Lake" }
                 ]
             },
             {
                 location: "Eholt Summit (near Greenwood)",
                 number: 9,
+                description: "Wilgress Rest Area near Eholt Summit, 16 km northeast of Greenwood. Mountain pass conditions monitoring before descending into the Boundary region.",
                 cams: [
-                    { name: "Eholt Summit - Westbound", id: 247 }
+                    { name: "Eholt Summit - Westbound", id: 247, desc: "Highway 3 looking westbound from Eholt Summit towards Greenwood" }
                 ]
             }
         ];
 
         let refreshInterval;
 
-        function getCameraImageUrl(cameraId) {
-            return `https://images.drivebc.ca/bchighwaycam/pub/cameras/${cameraId}.jpg?t=${Date.now()}`;
+        function getCameraImageUrl(cameraId, useProxy = true) {
+            const baseUrl = `https://images.drivebc.ca/bchighwaycam/pub/cameras/${cameraId}.jpg?t=${Date.now()}`;
+            return useProxy ? CORS_PROXY + encodeURIComponent(baseUrl) : baseUrl;
         }
 
-        function createCameraCard(cam) {
+        function createCameraCard(cam, location) {
             const imageUrl = getCameraImageUrl(cam.id);
             return `
-                <div class="camera-card">
-                    <div class="camera-title">${cam.name}</div>
-                    <div class="camera-image-container">
-                        <div class="loading">Loading...</div>
-                        <img class="camera-image"
-                             src="${imageUrl}"
-                             alt="${cam.name}"
-                             data-camera-id="${cam.id}"
-                             onerror="handleImageError(this)"
-                             onload="handleImageLoad(this)"
-                             onclick="openModal(this.src)">
-                    </div>
-                    <div class="last-updated" data-camera-id="${cam.id}">
-                        Last updated: ${new Date().toLocaleTimeString()}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card camera-card" id="card-${cam.id}">
+                        <div class="card-header">
+                            <i class="bi bi-camera"></i> ${cam.name}
+                        </div>
+                        <div class="camera-img-container">
+                            <div class="loading-spinner">
+                                <div class="spinner-border text-light" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            <img class="camera-img"
+                                 src="${imageUrl}"
+                                 alt="${cam.name}"
+                                 data-camera-id="${cam.id}"
+                                 crossorigin="anonymous"
+                                 onerror="handleImageError(this)"
+                                 onload="handleImageLoad(this)"
+                                 onclick="window.open(this.src, '_blank')">
+                        </div>
+                        <div class="card-body">
+                            <p class="description-text">
+                                <i class="bi bi-info-circle"></i> <strong>${location}:</strong> ${cam.desc}
+                            </p>
+                            <p class="timestamp" data-camera-id="${cam.id}">
+                                <i class="bi bi-clock"></i> Last updated: ${new Date().toLocaleTimeString()}
+                            </p>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-screenshot" onclick="takeScreenshot(${cam.id}, '${cam.name}')">
+                                    <i class="bi bi-camera-fill"></i> Take Screenshot
+                                </button>
+                                <button class="btn btn-refresh-single btn-sm" onclick="refreshCamera(${cam.id})">
+                                    <i class="bi bi-arrow-clockwise"></i> Refresh
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             `;
         }
 
         function createLocationSection(location) {
-            const camerasHtml = location.cams.map(cam => createCameraCard(cam)).join('');
+            const camerasHtml = location.cams.map(cam => createCameraCard(cam, location.location)).join('');
             return `
                 <div class="location-section">
                     <div class="location-header">
-                        <div class="location-number">${location.number}</div>
-                        <div class="location-name">${location.location}</div>
+                        <span class="location-badge">${location.number}</span>
+                        <span class="location-title">${location.location}</span>
+                        <p class="mt-3 mb-0 text-muted">${location.description}</p>
                     </div>
-                    <div class="cameras-grid">
+                    <div class="row">
                         ${camerasHtml}
                     </div>
                 </div>
@@ -392,36 +407,39 @@
 
         function handleImageLoad(img) {
             const container = img.parentElement;
-            const loading = container.querySelector('.loading');
+            const loading = container.querySelector('.loading-spinner');
             if (loading) loading.style.display = 'none';
             img.style.display = 'block';
         }
 
         function handleImageError(img) {
             const container = img.parentElement;
-            const loading = container.querySelector('.loading');
+            const loading = container.querySelector('.loading-spinner');
             if (loading) {
-                loading.textContent = 'Camera unavailable';
-                loading.style.color = '#ff6b6b';
+                loading.innerHTML = '<span class="text-danger"><i class="bi bi-exclamation-triangle"></i> Camera Unavailable</span>';
             }
         }
 
         function refreshCamera(cameraId) {
             const img = document.querySelector(`img[data-camera-id="${cameraId}"]`);
-            const timeDisplay = document.querySelector(`.last-updated[data-camera-id="${cameraId}"]`);
+            const timeDisplay = document.querySelector(`.timestamp[data-camera-id="${cameraId}"]`);
 
             if (img) {
-                const loading = img.parentElement.querySelector('.loading');
+                const loading = img.parentElement.querySelector('.loading-spinner');
                 if (loading) {
-                    loading.style.display = 'block';
-                    loading.textContent = 'Loading...';
-                    loading.style.color = 'white';
+                    loading.style.display = 'flex';
+                    loading.innerHTML = `
+                        <div class="spinner-border text-light" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    `;
                 }
+                img.style.display = 'none';
                 img.src = getCameraImageUrl(cameraId);
             }
 
             if (timeDisplay) {
-                timeDisplay.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
+                timeDisplay.innerHTML = `<i class="bi bi-clock"></i> Last updated: ${new Date().toLocaleTimeString()}`;
             }
         }
 
@@ -431,6 +449,60 @@
                     refreshCamera(cam.id);
                 });
             });
+        }
+
+        async function takeScreenshot(cameraId, cameraName) {
+            const card = document.getElementById(`card-${cameraId}`);
+            if (!card) return;
+
+            try {
+                // Show loading state
+                const btn = card.querySelector('.btn-screenshot');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Capturing...';
+                btn.disabled = true;
+
+                // Use html2canvas to capture the card
+                const canvas = await html2canvas(card, {
+                    backgroundColor: '#ffffff',
+                    scale: 2,
+                    logging: false,
+                    useCORS: true,
+                    allowTaint: true
+                });
+
+                // Convert to blob and download
+                canvas.toBlob(function(blob) {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+                    a.download = `${cameraName.replace(/[^a-z0-9]/gi, '_')}_${timestamp}.png`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+
+                    // Show success toast
+                    showToast();
+
+                    // Restore button
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                });
+            } catch (error) {
+                console.error('Screenshot error:', error);
+                alert('Failed to take screenshot. Please try again.');
+                const btn = card.querySelector('.btn-screenshot');
+                btn.innerHTML = '<i class="bi bi-camera-fill"></i> Take Screenshot';
+                btn.disabled = false;
+            }
+        }
+
+        function showToast() {
+            const toastEl = document.getElementById('screenshot-toast');
+            const toast = new bootstrap.Toast(toastEl);
+            toast.show();
         }
 
         function setupAutoRefresh() {
@@ -453,28 +525,11 @@
             }
         }
 
-        function openModal(src) {
-            const modal = document.getElementById('image-modal');
-            const modalImg = document.getElementById('modal-image');
-            modal.classList.add('active');
-            modalImg.src = src;
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('image-modal');
-            modal.classList.remove('active');
-        }
-
         // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
             const container = document.getElementById('cameras-container');
             container.innerHTML = cameras.map(location => createLocationSection(location)).join('');
             setupAutoRefresh();
-        });
-
-        // Prevent default click behavior on modal
-        document.querySelector('.modal-content').addEventListener('click', function(e) {
-            e.stopPropagation();
         });
     </script>
 </body>
