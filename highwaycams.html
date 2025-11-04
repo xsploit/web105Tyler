@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BC Highway Cams - Kaslo to Greenwood Route</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .route-info {
+            font-size: 1.2em;
+            opacity: 0.95;
+            margin-top: 10px;
+        }
+
+        .location-section {
+            margin-bottom: 40px;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .location-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .location-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .location-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-right: 15px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .location-name {
+            font-size: 1.8em;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .cameras-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        .camera-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .camera-card:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            transform: scale(1.02);
+        }
+
+        .camera-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            font-size: 1.1em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .camera-image-container {
+            position: relative;
+            background: #000;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .camera-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            cursor: pointer;
+        }
+
+        .loading {
+            color: white;
+            font-size: 1em;
+            position: absolute;
+        }
+
+        .last-updated {
+            padding: 10px 15px;
+            background: #e9ecef;
+            font-size: 0.85em;
+            color: #666;
+            text-align: center;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1em;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 10px auto;
+            display: block;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .refresh-btn:active {
+            transform: translateY(0);
+        }
+
+        .auto-refresh-control {
+            text-align: center;
+            color: white;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+        }
+
+        .auto-refresh-control label {
+            font-size: 1.1em;
+            margin-right: 10px;
+        }
+
+        .auto-refresh-control select {
+            padding: 8px 15px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .cameras-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .location-name {
+                font-size: 1.4em;
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 95%;
+            max-height: 95%;
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚗 BC Highway Cameras</h1>
+            <div class="route-info">Kaslo → Balfour → Nelson → Castlegar → Salmo → Trail → Rossland → Christina Lake → Greenwood</div>
+        </header>
+
+        <div class="auto-refresh-control">
+            <label for="refresh-interval">Auto-refresh:</label>
+            <select id="refresh-interval">
+                <option value="0">Off</option>
+                <option value="30">30 seconds</option>
+                <option value="60" selected>1 minute</option>
+                <option value="120">2 minutes</option>
+                <option value="300">5 minutes</option>
+            </select>
+            <button class="refresh-btn" onclick="refreshAllCameras()">🔄 Refresh All Cameras</button>
+        </div>
+
+        <div id="cameras-container"></div>
+    </div>
+
+    <div id="image-modal" class="modal" onclick="closeModal()">
+        <span class="close-modal">&times;</span>
+        <div class="modal-content">
+            <img id="modal-image" src="" alt="Full size camera view">
+        </div>
+    </div>
+
+    <script>
+        const cameras = [
+            {
+                location: "Kaslo",
+                number: 1,
+                cams: [
+                    { name: "Kaslo - North View", id: 760 },
+                    { name: "Kaslo - West View", id: 761 },
+                    { name: "Kaslo - South View", id: 762 }
+                ]
+            },
+            {
+                location: "Balfour",
+                number: 2,
+                cams: [
+                    { name: "Balfour Ferry Terminal", id: 303 },
+                    { name: "Balfour Ferry Ramp", id: 1030 }
+                ]
+            },
+            {
+                location: "Nelson",
+                number: 3,
+                cams: [
+                    { name: "Nelson - North View", id: 879 },
+                    { name: "Nelson - South View", id: 305 }
+                ]
+            },
+            {
+                location: "Castlegar",
+                number: 4,
+                cams: [
+                    { name: "Castlegar - Highway 3 at 14th Ave", id: 162 }
+                ]
+            },
+            {
+                location: "Salmo",
+                number: 5,
+                cams: [
+                    { name: "Salmo", id: 158 }
+                ]
+            },
+            {
+                location: "Trail",
+                number: 6,
+                cams: [
+                    { name: "Trail", id: 307 }
+                ]
+            },
+            {
+                location: "Rossland",
+                number: 7,
+                cams: [
+                    { name: "Rossland - West View", id: 160 },
+                    { name: "Rossland - East View", id: 1025 },
+                    { name: "Rossland - South View", id: 1026 }
+                ]
+            },
+            {
+                location: "Christina Lake",
+                number: 8,
+                cams: [
+                    { name: "Christina Lake - Highway 3", id: 157 }
+                ]
+            },
+            {
+                location: "Eholt Summit (near Greenwood)",
+                number: 9,
+                cams: [
+                    { name: "Eholt Summit - Westbound", id: 247 }
+                ]
+            }
+        ];
+
+        let refreshInterval;
+
+        function getCameraImageUrl(cameraId) {
+            return `https://images.drivebc.ca/bchighwaycam/pub/cameras/${cameraId}.jpg?t=${Date.now()}`;
+        }
+
+        function createCameraCard(cam) {
+            const imageUrl = getCameraImageUrl(cam.id);
+            return `
+                <div class="camera-card">
+                    <div class="camera-title">${cam.name}</div>
+                    <div class="camera-image-container">
+                        <div class="loading">Loading...</div>
+                        <img class="camera-image"
+                             src="${imageUrl}"
+                             alt="${cam.name}"
+                             data-camera-id="${cam.id}"
+                             onerror="handleImageError(this)"
+                             onload="handleImageLoad(this)"
+                             onclick="openModal(this.src)">
+                    </div>
+                    <div class="last-updated" data-camera-id="${cam.id}">
+                        Last updated: ${new Date().toLocaleTimeString()}
+                    </div>
+                </div>
+            `;
+        }
+
+        function createLocationSection(location) {
+            const camerasHtml = location.cams.map(cam => createCameraCard(cam)).join('');
+            return `
+                <div class="location-section">
+                    <div class="location-header">
+                        <div class="location-number">${location.number}</div>
+                        <div class="location-name">${location.location}</div>
+                    </div>
+                    <div class="cameras-grid">
+                        ${camerasHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleImageLoad(img) {
+            const container = img.parentElement;
+            const loading = container.querySelector('.loading');
+            if (loading) loading.style.display = 'none';
+            img.style.display = 'block';
+        }
+
+        function handleImageError(img) {
+            const container = img.parentElement;
+            const loading = container.querySelector('.loading');
+            if (loading) {
+                loading.textContent = 'Camera unavailable';
+                loading.style.color = '#ff6b6b';
+            }
+        }
+
+        function refreshCamera(cameraId) {
+            const img = document.querySelector(`img[data-camera-id="${cameraId}"]`);
+            const timeDisplay = document.querySelector(`.last-updated[data-camera-id="${cameraId}"]`);
+
+            if (img) {
+                const loading = img.parentElement.querySelector('.loading');
+                if (loading) {
+                    loading.style.display = 'block';
+                    loading.textContent = 'Loading...';
+                    loading.style.color = 'white';
+                }
+                img.src = getCameraImageUrl(cameraId);
+            }
+
+            if (timeDisplay) {
+                timeDisplay.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
+            }
+        }
+
+        function refreshAllCameras() {
+            cameras.forEach(location => {
+                location.cams.forEach(cam => {
+                    refreshCamera(cam.id);
+                });
+            });
+        }
+
+        function setupAutoRefresh() {
+            const select = document.getElementById('refresh-interval');
+            select.addEventListener('change', function() {
+                if (refreshInterval) {
+                    clearInterval(refreshInterval);
+                }
+
+                const seconds = parseInt(this.value);
+                if (seconds > 0) {
+                    refreshInterval = setInterval(refreshAllCameras, seconds * 1000);
+                }
+            });
+
+            // Start with default 1 minute refresh
+            const defaultInterval = parseInt(select.value);
+            if (defaultInterval > 0) {
+                refreshInterval = setInterval(refreshAllCameras, defaultInterval * 1000);
+            }
+        }
+
+        function openModal(src) {
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-image');
+            modal.classList.add('active');
+            modalImg.src = src;
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('image-modal');
+            modal.classList.remove('active');
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('cameras-container');
+            container.innerHTML = cameras.map(location => createLocationSection(location)).join('');
+            setupAutoRefresh();
+        });
+
+        // Prevent default click behavior on modal
+        document.querySelector('.modal-content').addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
