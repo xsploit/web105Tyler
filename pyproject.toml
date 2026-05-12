@@ -1,0 +1,84 @@
+[project]
+name = "poml"
+version = "0.0.9"
+description = "Prompt Orchestration Markup Language"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {file = "LICENSE"}
+dependencies = [
+  "nodejs-wheel",
+  "pydantic",
+]
+
+[project.optional-dependencies]
+dev = [
+  "black",
+  "isort",
+  "flake8",
+  "pytest",
+  "hatch",
+  "twine",
+  "mkdocs",
+  "mkdocs-material",
+  "mkdocs-git-revision-date-localized-plugin",
+  "mkdocs-git-authors-plugin",
+  "mkdocs-timetoread-plugin",
+  "mkdocstrings[python]",
+  "mike",
+]
+agent = [
+  "langchain",
+  "mlflow",
+  "agentops",
+  "weave",
+  "langchain-openai",
+  "openai",
+  "mcp",
+  "fastmcp",
+  "pydantic",
+  "typing-extensions",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["python/poml"]
+include = [
+  # Include the bundled CLI file
+  "/python/poml/js/cli.js",
+]
+
+# Use the 'force-include' table to explicitly add node_modules, bypassing the default excludes.
+[tool.hatch.build.targets.wheel.force-include]
+# This line tells hatch:
+# 1. Source: Find the directory at 'python/poml/node_modules' in your project.
+# 2. Destination: Place its contents at the path 'poml/node_modules' inside the built wheel.
+"python/poml/node_modules" = "/poml/node_modules"
+
+[project.scripts]
+poml-cli = "poml.cli:entrypoint"
+
+[tool.black]
+line-length = 120
+target-version = ['py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # Exclude auto-generated files and directories
+  python/poml/_tags\.py
+  | assets
+  | _version\.py
+)
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 120
+known_first_party = ["poml"]
+extend_skip_glob = [
+  "python/poml/_tags.py",
+  "assets/*",
+  "_version.py",
+]
